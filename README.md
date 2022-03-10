@@ -14,3 +14,8 @@ file then re-build the project again
 implementation 'com.google.code.gson:gson:2.9.0'
 
 ```
+
+
+
+
+**in order to use this project first you need to install the dependency of Gson library then you need to pass int number and file name in order to return one quote**
