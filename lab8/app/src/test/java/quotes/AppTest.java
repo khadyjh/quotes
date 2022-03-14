@@ -28,4 +28,10 @@ class AppTest {
 
         assertEquals(quotExp.toString(),quot.toString());
     }
+
+    @Test
+    @DisplayName("lab9")
+    void test(){
+
+    }
 }

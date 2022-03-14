@@ -7,8 +7,10 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -17,40 +19,109 @@ public class App {
 
 
     public static void main(String[] args) throws IOException {
+////////////////////////////////////////////////////////lab8//////////////////////////////////////////////////
+//        try {
+//            Quot quot=gsonQuote(500,"quotes.json");
+//            System.out.println(quot);
+//        }catch (Exception exception)
+//        {
+//            System.err.println("not found ");
+//        }
 
-//        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-//        InputStream is = classloader.getResourceAsStream("quotes.json");
-
-        Quot quot=gsonQuote(0,"quotes.json");
-        System.out.println(quot);
-        Quot quotExp=new Quot("Marilyn Monroe","I am good, but not an angel. I do sin, but I am not the devil. I am just a small girl in a big world trying to find someone to love.");
+////////////////////////////////////////////////////////lab9//////////////////////////////////////////////////
+        wrrc();
 
 
-
-        System.out.println(quotExp);
 
     }
-
+    ////////////////////////////////////////////////////////lab8//////////////////////////////////////////////////
 
     public static Quot gsonQuote(int num,String filename) throws IOException {
         Gson gson=new Gson();
-//        URL url=new URL("https://codefellows.github.io/code-401-java-guide/curriculum/class-08/recentquotes.json");
+
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         InputStream is = classloader.getResourceAsStream(filename);
 
         Reader reader1= new InputStreamReader(is);
 
-//        Reader reader= new BufferedReader(new InputStreamReader(url.openStream()));
         List<Quot> quotList=gson.fromJson(reader1,new TypeToken<List<Quot>>() {}.getType());
-//        Quot quot=gson.fromJson(reader,Quot.class);
-//        System.out.println(quot+"///////");
 
-        int random_int = (int)Math.floor(Math.random()*(quotList.size()+1));
-//        System.out.println(quotList.get(random_int));
+//        int random_int = (int)Math.floor(Math.random()*(quotList.size()+1));
+//      System.out.println(quotList.get(random_int));
 
         reader1.close();
 
         return quotList.get(num) ;
+
+
+    }
+    public static void searchForAuthor(String authorName){
+        Gson gson=new Gson();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("quotes.json");
+
+        Reader reader1= new InputStreamReader(is);
+
+        List<Quot> quotList=gson.fromJson(reader1,new TypeToken<List<Quot>>() {}.getType());
+        for (Quot quote :
+                quotList) {
+            if(Objects.equals(quote.getAuthor(), authorName)){
+                System.out.println("Quote of " + authorName +" => "+ quote.getText());
+            }
+        }
+
+    }
+    public static void searchForQuote(String name){
+        Gson gson=new Gson();
+
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("quotes.json");
+
+        Reader reader1= new InputStreamReader(is);
+
+        List<Quot> quotList=gson.fromJson(reader1,new TypeToken<List<Quot>>() {}.getType());
+        for (Quot quote :
+                quotList) {
+            if(quote.getText().contains(name)){
+                System.out.println("Quote contains => " + name +" => "+ quote.getText());
+            }
+        }
+
+    }
+
+    ////////////////////////////////////////////////////////lab9//////////////////////////////////////////////////
+
+    public static void wrrc() throws IOException {
+
+        Gson gson = new Gson();
+        try {
+            //read file from api if internet connection is on
+            URL quoteUrl = new URL("https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
+            Reader reader = new InputStreamReader(quoteUrl.openStream());
+
+            // read json file in java object
+            QuotAPI quotAPI=gson.fromJson(reader,QuotAPI.class);
+            System.out.println(quotAPI);
+
+            //write the api json file on local file
+            File quoteFile = new File("./quotesNew1.json");
+            try (FileWriter quoteFileWriter = new FileWriter(quoteFile,true)) {
+                      quoteFileWriter.write(",\n");
+                gson.toJson(quotAPI, quoteFileWriter);
+            }
+
+        }catch (UnknownHostException unknownHostException){
+            // if internet connection dropped will read data from local file
+                ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+                InputStream is = classloader.getResourceAsStream("quotes.json");
+                assert is != null;
+                Reader reader1= new InputStreamReader(is);
+                // read json file contain array of object
+                List<Quot> quotList=gson.fromJson(reader1,new TypeToken<List<Quot>>() {}.getType());
+                int random_int = (int)Math.floor(Math.random()*(quotList.size()+1));
+                System.out.println(quotList.get(random_int));
+        }
 
     }
 }
