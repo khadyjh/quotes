@@ -2,7 +2,7 @@ package quotes;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Quot {
+public class Quot extends QuotAPI {
 //    @SerializedName("quoteAuthor")
     private String author;
 //    @SerializedName("quoteText")
@@ -10,9 +10,12 @@ public class Quot {
 
 
     public Quot(String author, String text) {
+        super(author,text);
         this.author = author;
         this.text = text;
     }
+
+
 
     public String getAuthor() {
         return author;
@@ -33,7 +36,7 @@ public class Quot {
     @Override
     public String toString() {
         return "quot{" +
-                "author111='" + author + '\'' +
+                "author='" + author + '\'' +
                 ", text='" + text + '\'' +
                 '}';
     }

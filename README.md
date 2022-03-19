@@ -19,7 +19,9 @@ implementation 'com.google.code.gson:gson:2.9.0'
 after that run the project as normal and pass random number in order to get random quotes.
 
 
+#lab 9
 
+read data from api and return specific quote , if internet connection lost it will still work and return quote from local file 
 
 
 
