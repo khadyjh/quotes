@@ -33,6 +33,7 @@ public class App {
 
 
 
+
     }
     ////////////////////////////////////////////////////////lab8//////////////////////////////////////////////////
 
@@ -93,35 +94,43 @@ public class App {
     ////////////////////////////////////////////////////////lab9//////////////////////////////////////////////////
 
     public static void wrrc() throws IOException {
-
-        Gson gson = new Gson();
         try {
-            //read file from api if internet connection is on
-            URL quoteUrl = new URL("https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
-            Reader reader = new InputStreamReader(quoteUrl.openStream());
-
-            // read json file in java object
-            QuotAPI quotAPI=gson.fromJson(reader,QuotAPI.class);
-            System.out.println(quotAPI);
-
-            //write the api json file on local file
-            File quoteFile = new File("./quotesNew1.json");
-            try (FileWriter quoteFileWriter = new FileWriter(quoteFile,true)) {
-                      quoteFileWriter.write(",\n");
-                gson.toJson(quotAPI, quoteFileWriter);
-            }
-
+            System.out.println(readOnline());
         }catch (UnknownHostException unknownHostException){
-            // if internet connection dropped will read data from local file
-                ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-                InputStream is = classloader.getResourceAsStream("quotes.json");
-                assert is != null;
-                Reader reader1= new InputStreamReader(is);
-                // read json file contain array of object
-                List<Quot> quotList=gson.fromJson(reader1,new TypeToken<List<Quot>>() {}.getType());
-                int random_int = (int)Math.floor(Math.random()*(quotList.size()+1));
-                System.out.println(quotList.get(random_int));
+            System.out.println( readLocal());
         }
+    }
 
+
+    public static QuotAPI readOnline() throws IOException {
+        Gson gson=new Gson();
+        //read file from api if internet connection is on
+        URL quoteUrl = new URL("https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang=en");
+        Reader reader = new InputStreamReader(quoteUrl.openStream());
+
+        // read json file in java object
+        QuotAPI quotAPI=gson.fromJson(reader,QuotAPI.class);
+
+        //write the api json file on local file
+        File quoteFile = new File("./quotesNew1.json");
+        try (FileWriter quoteFileWriter = new FileWriter(quoteFile,true)) {
+            quoteFileWriter.write(",\n");
+            gson.toJson(quotAPI, quoteFileWriter);
+        }
+        return quotAPI;
+    }
+
+    public static Quot readLocal(){
+        Gson gson=new Gson();
+        // if internet connection dropped will read data from local file
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("quotes.json");
+        assert is != null;
+        Reader reader1= new InputStreamReader(is);
+        // read json file contain array of object
+        List<Quot> quotList=gson.fromJson(reader1,new TypeToken<List<Quot>>() {}.getType());
+        int random_int = (int)Math.floor(Math.random()*(quotList.size()+1));
+
+        return quotList.get(random_int);
     }
 }

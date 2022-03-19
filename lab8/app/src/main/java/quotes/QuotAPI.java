@@ -27,7 +27,7 @@ public class QuotAPI {
 
     @Override
     public String toString() {
-        return "quot{" +
+        return "QuotAPI{" +
                 "author='" + quoteAuthor + '\'' +
                 ", text='" + quoteText + '\'' +
                 "},";

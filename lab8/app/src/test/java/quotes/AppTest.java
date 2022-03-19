@@ -3,10 +3,18 @@
  */
 package quotes;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.UnknownHostException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +39,18 @@ class AppTest {
 
     @Test
     @DisplayName("lab9")
-    void test(){
-
+    void testApi() throws IOException {
+        // readOnline() read randomly from api and return one random quoteAPI object
+        QuotAPI quotAPI=App.readOnline();
+        assertNotNull(quotAPI);
     }
+
+    @Test
+    @DisplayName("lab9")
+    void testLocal(){
+        // readLocal() read randomly from local and return one random quote object
+        Quot quot=App.readLocal();
+        assertNotNull(quot);
+    }
+
 }
