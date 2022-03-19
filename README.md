@@ -7,18 +7,20 @@ and read json file from api and return random quotes , and even if internet conn
 ## Gson 
 library to convert from json to java object and to convert from java object to json object 
 
-in order to use it you need to paste
-ites dependency in the build.gradle
-file then re-build the project again
 
+in order to run this project you need to install Gson library in your build.gradle file **you can find the dependency down** 
+then re-build the project again
 ```
 // https://mvnrepository.com/artifact/com.google.code.gson/gson
 implementation 'com.google.code.gson:gson:2.9.0'
 
 ```
 
+after that run the project as normal and pass random number in order to get random quotes.
 
 
 
-**in order to use this project first you need to install the dependency of Gson library then you need to pass int number and file name in order to return one quote**
+
+
+
 
